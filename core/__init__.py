@@ -1,1 +1,1 @@
-from blockchain import Blockchain
+from core.blockchain import Blockchain

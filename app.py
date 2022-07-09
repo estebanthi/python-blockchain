@@ -19,7 +19,7 @@ blockchain = Blockchain()
 @app.route('/mine', methods=['GET'])
 def mine():
     last_block = blockchain.last_block
-    last_proof = last_block['proof']
+    last_proof = last_block.proof
     proof = blockchain.proof_of_work(last_proof)
 
     blockchain.new_transaction(
@@ -28,23 +28,22 @@ def mine():
         amount=1,
     )
 
-    previous_hash = blockchain.hash(last_block)
+    previous_hash = blockchain.hash(last_block.toJSON())
     block = blockchain.new_block(proof, previous_hash)
 
     response = {
         'message': "New Block Forged",
-        'index': block['index'],
-        'transactions': block['transactions'],
-        'proof': block['proof'],
-        'previous_hash': block['previous_hash'],
+        'index': block.index,
+        'transactions': [transaction.toJSON() for transaction in block.transactions],
+        'proof': block.proof,
+        'previous_hash': block.previous_hash,
     }
     return jsonify(response), 200
 
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-    values = request.get_json()
-
+    values = dict(request.form)
     required = ['sender', 'recipient', 'amount']
     if not all(k in values for k in required):
         return 'Missing values', 399

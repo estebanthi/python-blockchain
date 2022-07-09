@@ -4,3 +4,10 @@ class Transaction:
         self.sender = sender
         self.recipient = recipient
         self.amount = amount
+
+    def toJSON(self):
+        return {
+            'sender': self.sender,
+            'recipient': self.recipient,
+            'amount': self.amount,
+        }

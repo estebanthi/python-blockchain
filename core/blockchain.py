@@ -2,8 +2,8 @@ import hashlib
 import json
 from time import time
 
-from transaction import Transaction
-from block import Block
+from core.transaction import Transaction
+from core.block import Block
 
 
 class Blockchain(object):
